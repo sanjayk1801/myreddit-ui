@@ -7,12 +7,9 @@ import { dedupExchange, fetchExchange } from 'urql';
 import { cacheExchange } from '@urql/exchange-graphcache';
 import {
   LoginMutation,
-  LogoutMutation,
   MeDocument,
   MeQuery,
   RegisterMutation,
-  VoteMutationVariables,
-  DeletePostMutationVariables,
 } from "../generated/graphql";
 
 
