@@ -1,6 +1,5 @@
 import { Button } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { useReducedMotion } from "framer-motion";
 import { useRouter } from "next/router";
 import React from "react";
 import InputFiled from "../components/InputFiled";
@@ -13,11 +12,13 @@ export interface RegisterProps {
 }
 
 const Register: React.FC <RegisterProps> = ({}) => {
+    
     const [, register] = useRegisterMutation();
     const router = useRouter();
+    
     return ( 
         <Wrapper varient="small">
-        <Formik initialValues={{username: "", password: ""}}
+        <Formik initialValues={{username: "", email: "", password: ""}}
             onSubmit={ async (values, {setErrors})=> {
                 const response = await register(values)
                 if(response.data?.register.errors){
@@ -36,7 +37,13 @@ const Register: React.FC <RegisterProps> = ({}) => {
                         placeholder="username" 
                         label="Username"
                      />
-                      <InputFiled 
+                       <InputFiled  
+                        name="email"
+                        placeholder="email" 
+                        label="Email"
+                        type="email"
+                     />
+                      <InputFiled
                         name="password" 
                         placeholder="password" 
                         label="Password"

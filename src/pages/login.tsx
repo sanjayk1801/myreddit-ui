@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button, Link } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
@@ -6,6 +6,7 @@ import InputFiled from "../components/InputFiled";
 import Wrapper from "../components/Wrapper";
 import { useLoginMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
+import  NextLink   from 'next/link'
 
 export interface LoginProps {
     
@@ -16,7 +17,7 @@ const Login: React.FC <LoginProps> = ({}) => {
     const router = useRouter();
     return ( 
         <Wrapper varient="small">
-        <Formik initialValues={{username: "", password: ""}}
+        <Formik initialValues={{usernameOrEmail: "", password: ""}}
             onSubmit={ async (values, {setErrors})=> {
                 const response = await Login(values)
                 if(response.data?.login.errors){
@@ -31,9 +32,9 @@ const Login: React.FC <LoginProps> = ({}) => {
            { ({ isSubmitting }) => (
                 <Form>
                        <InputFiled 
-                        name="username" 
-                        placeholder="username" 
-                        label="Username"
+                        name="usernameOrEmail" 
+                        placeholder="username or email" 
+                        label="Username or Email"
                      />
                       <InputFiled 
                         name="password" 
@@ -41,7 +42,12 @@ const Login: React.FC <LoginProps> = ({}) => {
                         label="Password"
                         type="password"
                         
-                     />   
+                     /> 
+                     <Box>
+                        <NextLink  href="/forgot-password">
+                            <Link>forgot password?</Link>
+                        </NextLink>   
+                     </Box>  
                      <Button mt={4} type="submit" colorScheme="teal" isLoading={isSubmitting} >Login</Button>                  
                 </Form>
                  
