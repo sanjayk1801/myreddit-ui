@@ -1,5 +1,6 @@
 import { Box, Flex, Link, LinkBox, Button } from "@chakra-ui/react";
 import  NextLink   from 'next/link'
+import router from "next/router";
 import React, { useMemo } from "react";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
@@ -35,6 +36,12 @@ const NavBar: React.FC<NavBarProps> = () => {
             <Flex>
             <Box mr={'2'}>{data.me.username}</Box>
             <Button 
+                varient="link"
+                onClick={() => {
+                   router.push("/create-post")
+                }}
+            > New Post </Button>
+            <Button ml="2" 
                 varient="link"
                 onClick={() => {
                     handelLogout({}, { additionalTypenames: ['User'] });

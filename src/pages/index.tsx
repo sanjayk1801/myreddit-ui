@@ -1,14 +1,15 @@
 import NavBar from "../components/NavBar"
+import PostPreview from "../components/PostPreview";
 import { usePostsQuery } from "../generated/graphql"
 
 const Index = () => {
 
-  const [{data}] = usePostsQuery();
+  const [{data, fetching}] = usePostsQuery();
   return (
   <>
   <NavBar  />
-  {!data? <div>loading....</div>: data.posts.map(p => 
-    <div key={p.id}> {p.title}</div>
+  { fetching? <div>loading....</div>: data.posts.map(p => 
+   <PostPreview title= {p.title} body={p.body}></PostPreview> 
   )}
   </>
   
