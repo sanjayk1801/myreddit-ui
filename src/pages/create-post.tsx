@@ -1,53 +1,59 @@
-import { Box, Button, Link } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { Button } from "@chakra-ui/react";
+import { Field, Form, Formik, useField } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
 import InputFiled from "../components/InputFiled";
 import Wrapper from "../components/Wrapper";
-import { useCreatePostMutation, useLoginMutation } from "../generated/graphql";
-import { toErrorMap } from "../utils/toErrorMap";
-import  NextLink   from 'next/link'
+import { useCreatePostMutation } from "../generated/graphql";
+import NavBar from "../components/NavBar";
 
-export interface CreatePostProps {
-    
-}
+export interface CreatePostProps {}
 
-const CreatePost: React.FC <CreatePostProps> = ({}) => {
-    const [{data}, CreatePost] = useCreatePostMutation();
-    const router = useRouter();
-    return ( 
-        <Wrapper varient="small">
-        <Formik initialValues={{title: "", body: ""}}
-            onSubmit={ async (values, {setErrors})=> {
-                const response = await CreatePost(values)
-                if(response.data.createPost.id){
-    
-                    router.push("/")
-                }
+const CreatePost: React.FC<CreatePostProps> = ({}) => {
+	const [, CreatePost] = useCreatePostMutation();
+	const router = useRouter();
+	return (
+		<>
+			<NavBar />
+			<Wrapper varient="regular">
+				<Formik
+					initialValues={{ title: "", body: "" }}
+					onSubmit={async (values, { setErrors }) => {
+						const response = await CreatePost(values);
+						if (response.data.createPost.id) {
+							router.push("/");
+						}
+					}}
+				>
+					{({ isSubmitting }) => (
+						<Form>
+							<InputFiled
+								name="title"
+								placeholder="title"
+								label="Title"
+							/>
 
-            }}
-        >
-           { ({ isSubmitting }) => (
-                <Form>
-                       <InputFiled 
-                            name="title" 
-                            placeholder="title" 
-                            label="Title"
-                     />
-                      <InputFiled 
-                            name="body" 
-                            placeholder="body" 
-                            label="Body"
-                            type="text"
-                        
-                     /> 
-                     <Button mt={4} type="submit" colorScheme="teal" isLoading={isSubmitting} >Submit Post</Button>                  
-                </Form>
-                 
-            )}
-        </Formik>
-        </Wrapper>
-     );
-}
- 
+							<InputFiled
+								textarea
+								name="body"
+								placeholder="body"
+								label="Body"
+							/>
+
+							<Button
+								mt={4}
+								type="submit"
+								colorScheme="teal"
+								isLoading={isSubmitting}
+							>
+								Submit Post
+							</Button>
+						</Form>
+					)}
+				</Formik>
+			</Wrapper>
+		</>
+	);
+};
+
 export default CreatePost;

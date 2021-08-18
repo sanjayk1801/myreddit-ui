@@ -81,6 +81,8 @@ export type Post = {
   updatedAt: Scalars['DateTime'];
   title: Scalars['String'];
   body: Scalars['String'];
+  user: User;
+  bodySnippet: Scalars['String'];
 };
 
 export type Query = {
@@ -102,6 +104,7 @@ export type User = {
   email: Scalars['String'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
+  posts: Array<Post>;
 };
 
 export type UserLoginInput = {
@@ -232,7 +235,11 @@ export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts: Array<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'title' | 'createdAt' | 'updatedAt' | 'body'>
+    & Pick<Post, 'id' | 'title' | 'createdAt' | 'updatedAt' | 'bodySnippet'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
   )> }
 );
 
@@ -343,7 +350,11 @@ export const PostsDocument = gql`
     title
     createdAt
     updatedAt
-    body
+    bodySnippet
+    user {
+      id
+      username
+    }
   }
 }
     `;

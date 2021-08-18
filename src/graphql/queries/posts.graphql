@@ -4,6 +4,10 @@ query Posts {
 		title
 		createdAt
 		updatedAt
-		body
+		bodySnippet
+		user {
+			id
+			username
+		}
 	}
 }
