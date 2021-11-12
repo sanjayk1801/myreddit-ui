@@ -2,6 +2,7 @@ import { Box, Heading, Link, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 
 export interface PostPreviewProps {
+	id: number;
 	title: string;
 	body: string;
 	createdAt: string;
@@ -9,6 +10,7 @@ export interface PostPreviewProps {
 }
 
 const PostPreview: React.FC<PostPreviewProps> = ({
+	id,
 	title,
 	body,
 	createdAt,
@@ -19,7 +21,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
 			<Box m="50px 100px 0 100px" p={10} shadow="md" borderWidth="1px">
 				<Heading fontSize="xl">{title}</Heading>
 				<Text mt={4}>{body}</Text>
-				<Link color="red" fontSize="sm" href="">
+				<Link color="red" fontSize="sm" href={"/post/" + id}>
 					read more...
 				</Link>
 			</Box>

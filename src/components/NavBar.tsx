@@ -22,34 +22,43 @@ const NavBar: React.FC<NavBarProps> = () => {
         body = null;
     }else if(!data?.me){
         body = (
-            <>
-                <NextLink href="/login">
-                        <Link mr="2">login</Link>
-                    </NextLink>
-                    <NextLink  href="/register">
-                        <Link>register</Link>
-                </NextLink>
-            </>
-        )
+				<Flex height="50">
+					<NextLink href="/login">
+						<Link mr="2">login</Link>
+					</NextLink>
+					<NextLink href="/register">
+						<Link>register</Link>
+					</NextLink>
+				</Flex>
+			
+		);
     }else{
         body = (
-            <Flex>
-            <Box mr={'2'}>{data.me.username}</Box>
-            <Button 
-                varient="link"
-                onClick={() => {
-                   router.push("/create-post")
-                }}
-            > New Post </Button>
-            <Button ml="2" 
-                varient="link"
-                onClick={() => {
-                    handelLogout({}, { additionalTypenames: ['User'] });
-                }}
-                isLoading={fetchingLogout}
-            > logout </Button>
-            </Flex>
-        )
+			<Flex height="50">
+				
+				<Box mr={"2"}>{data.me.username}</Box>
+				<Button
+					varient="link"
+					onClick={() => {
+						router.push("/create-post");
+					}}
+				>
+					{" "}
+					New Post{" "}
+				</Button>
+				<Button
+					ml="2"
+					varient="link"
+					onClick={() => {
+						handelLogout({}, { additionalTypenames: ["User"] });
+					}}
+					isLoading={fetchingLogout}
+				>
+					{" "}
+					logout{" "}
+				</Button>
+			</Flex>
+		);
     }
 
     return (

@@ -85,11 +85,24 @@ export type Post = {
   bodySnippet: Scalars['String'];
 };
 
+export type PostsResponse = {
+  __typename?: 'PostsResponse';
+  errors?: Maybe<Array<FieldError>>;
+  posts?: Maybe<Array<Post>>;
+  totalCount?: Maybe<Scalars['Float']>;
+};
+
 export type Query = {
   __typename?: 'Query';
-  posts: Array<Post>;
+  paginatedPosts: PostsResponse;
   post?: Maybe<Post>;
   me?: Maybe<User>;
+};
+
+
+export type QueryPaginatedPostsArgs = {
+  pageIndex: Scalars['Float'];
+  size: Scalars['Float'];
 };
 
 
@@ -228,19 +241,42 @@ export type MeQuery = (
   )> }
 );
 
-export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PostQueryVariables = Exact<{
+  postId: Scalars['Float'];
+}>;
 
 
-export type PostsQuery = (
+export type PostQuery = (
   { __typename?: 'Query' }
-  & { posts: Array<(
+  & { post?: Maybe<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'title' | 'createdAt' | 'updatedAt' | 'bodySnippet'>
+    & Pick<Post, 'id' | 'title' | 'createdAt' | 'updatedAt' | 'body'>
     & { user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
   )> }
+);
+
+export type PaginatedPostsQueryVariables = Exact<{
+  size: Scalars['Float'];
+  pageIndex: Scalars['Float'];
+}>;
+
+
+export type PaginatedPostsQuery = (
+  { __typename?: 'Query' }
+  & { paginatedPosts: (
+    { __typename?: 'PostsResponse' }
+    & { posts?: Maybe<Array<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'title' | 'createdAt' | 'updatedAt' | 'bodySnippet'>
+      & { user: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ) }
+    )>> }
+  ) }
 );
 
 
@@ -343,14 +379,14 @@ export const MeDocument = gql`
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
-export const PostsDocument = gql`
-    query Posts {
-  posts {
+export const PostDocument = gql`
+    query Post($postId: Float!) {
+  post(id: $postId) {
     id
     title
     createdAt
     updatedAt
-    bodySnippet
+    body
     user {
       id
       username
@@ -359,6 +395,27 @@ export const PostsDocument = gql`
 }
     `;
 
-export function usePostsQuery(options: Omit<Urql.UseQueryArgs<PostsQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<PostsQuery>({ query: PostsDocument, ...options });
+export function usePostQuery(options: Omit<Urql.UseQueryArgs<PostQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PostQuery>({ query: PostDocument, ...options });
+};
+export const PaginatedPostsDocument = gql`
+    query PaginatedPosts($size: Float!, $pageIndex: Float!) {
+  paginatedPosts(size: $size, pageIndex: $pageIndex) {
+    posts {
+      id
+      title
+      createdAt
+      updatedAt
+      bodySnippet
+      user {
+        id
+        username
+      }
+    }
+  }
+}
+    `;
+
+export function usePaginatedPostsQuery(options: Omit<Urql.UseQueryArgs<PaginatedPostsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PaginatedPostsQuery>({ query: PaginatedPostsDocument, ...options });
 };

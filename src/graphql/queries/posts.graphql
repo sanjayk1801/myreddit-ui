@@ -1,13 +1,15 @@
-query Posts {
-	posts {
-		id
-		title
-		createdAt
-		updatedAt
-		bodySnippet
-		user {
+query PaginatedPosts($size: Float!, $pageIndex: Float!) {
+	paginatedPosts(size: $size, pageIndex: $pageIndex) {
+		posts {
 			id
-			username
+			title
+			createdAt
+			updatedAt
+			bodySnippet
+			user {
+				id
+				username
+			}
 		}
 	}
 }
